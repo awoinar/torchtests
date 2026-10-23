@@ -1,0 +1,7 @@
+*
+!pyproject.toml
+!uv.lock
+!.python-version
+!app.py
+!einsum_core.py
+!presets.py

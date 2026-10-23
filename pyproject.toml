@@ -1,0 +1,40 @@
+[project]
+name = "einsum-playground"
+version = "0.1.0"
+description = "Streamlit playground for torch.einsum: output shapes, index roles, and the equivalent nested loops."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "streamlit==1.66.1",
+    "torch==2.14.1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest==9.1.1",
+    "ruff==0.17.2",
+]
+
+[tool.uv]
+package = false
+
+# This machine has no NVIDIA GPU. PyPI's Linux torch wheel pulls several GB of
+# CUDA libraries (nvidia-* packages), so torch comes from PyTorch's CPU-only index.
+# `explicit = true` keeps every other package on PyPI.
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
+
+[tool.ruff]
+line-length = 100
+
+[tool.pytest.ini_options]
+# No pytest plugins are used. Disabling autoload keeps plugins from a sourced
+# ROS environment (on PYTHONPATH) from being pulled into the test run.
+addopts = "--disable-plugin-autoload"
+pythonpath = ["."]
+testpaths = ["tests"]
